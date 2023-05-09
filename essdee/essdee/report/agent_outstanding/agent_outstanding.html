@@ -1,0 +1,103 @@
+<style>
+	.print-format {
+	margin-left: 3mm;
+	margin-right: 4mm;
+	}
+	.print-format th{
+		background-color:#5b9bd5 !important;
+		color: white;
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+	.print-format td
+	{
+		background-color: #ffffff !important;
+		color:black;
+		border-color:#2d487c !important;
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+	.print-format p {
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+	.print-format strong, .print-format u {
+		color:#2f497d;
+	}
+	.table-bordered th.right{border-right: none !important;}
+	.table-bordered th.left{border-left: none !important;}
+    .table-bordered td.right{border-right: none !important;}
+    .table-bordered td.left{border-left: none !important;}
+</style>
+<div id="header-html" class="hidden-pdf">
+</div>
+<h4 class="text-center">{{ filters.company }}</h4>
+<div class="row">
+	<div class="col-xs-3"><label class="text-right" style="color:#000000; font-weight: 600">{{ filters.customer_group }}</label></div>
+	<div class="col-xs-8"><label class="text-right" style="color: #000000; font-weight: 600">{{ "Outstanding as on " }}{{ frappe.format(filters.report_date, 'Date')}}</label></div>
+</div>
+	<table class="table table-bordered"  style="border-color:#2d487c;border-collapse: collapse; margin: 0px; padding: 0px;">
+	<thead>
+		<tr>
+			<th class="right left text-right" style="width: 10%;">{{ "Posting Date" }}</th>
+			<th class="right left text-center" style="width: 15%">{{ "Customer" }}</th>
+			<th class="right left" style="width: 15%">{{ "Voucher No" }}</th>
+			<th class="right left text-right" style="width: 15%">{{ "Invoiced Amount" }}</th>
+            <th class="right left text-right" style="width: 10%">{{ "Paid Amount" }}</th>
+            <th class="right left text-right" style="width: 10%">{{ "Credit Note" }}</th>
+            <th class="right left text-right" style="width: 15%">{{ "Outstanding Amount" }}</th>
+            <th class="right left text-right" style="width: 10%">{{ "Age (Days)" }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in data %}
+			{% if row.posting_date == '' %}
+				<tr style="height: 5px; margin: 0px; padding: 0px">
+					<td class="right left text-right">
+						<strong>
+							{% if row.party == 'Total' %}
+								{{ row.party }}
+							{% endif %}
+						</strong>
+					</td>
+					<td class="right left text-center"><strong>
+						{% if row.party != 'Total' %}
+							<u>{{ row.party }}</u>
+						{% endif %}
+					</strong></td>
+					<td class="right left"></td>
+					<td class="right left"><strong><u>{{row.customer_primary_contact.split('\n')[0]}}</u></strong></td>
+					<td class="right left"><strong><u>{{row.customer_primary_contact.split('\n')[1] or ""}}</u></strong></td>
+					<td class="right left"></td>
+					<td class="right left text-right"><strong>
+						{% if row.party == 'Total' %}
+							{{row.outstanding}}
+						{% else %}
+							<u>{{row.outstanding}}</u>
+						{% endif %}
+						</strong></td>
+					<td class="right left"></td>
+				</tr>
+			{% else %}
+			<tr style="height: 5px; margin: 0px; padding: 0px">
+				
+			<td class="right left text-right">{{ frappe.format(row.posting_date, 'Date') }}</td>
+			<td class="right left"></td>
+			<td class="right left text-left">{{ row.voucher_no }}</td>
+			<td class="right left text-right">{{ row.invoiced }}</td>
+			<td class="right left text-right">{{ row.paid }}</td>
+			<td class="right left text-right">{{ row.credit_note }}</td>
+			<td class="right left text-right">{{ row.outstanding }}</td>
+			<td class="right left text-right">{{ row.age }}</td>
+			</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>
+<p class="text-right text-muted">Printed On {{ frappe.format(frappe.utils.get_datetime(), 'Datetime') }}</p>
+<div id="footer-html" style="margin-bottom: 0px !important;">
+	<p style="text-align: left;">
+		<span style="float: right">{{ _("Page {0} / {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}</span>
+		{{ filters.customer_group }} {{ " - Outstanding as on " }}{{ frappe.format(doc.report_start_time, 'Datetime')}}
+		</p>
+</div>

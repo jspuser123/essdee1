@@ -1,0 +1,51 @@
+{% if 'letter_head' in filters %}
+<div  id="header-html" class="hidden-pdf">
+ <div class="letter-head">{{ filters.letter_head }}</div>
+</div>
+{% endif %}
+<h2 class="text-center">{{ "Statement of Account" }}</h2>
+<h4 class="text-center">{{ filters.party[0] }}</h4>
+<h5 class="text-center">
+    {{ frappe.format(filters.from_date, 'Date')}}
+	{{ "to" }}
+	{{ frappe.format(filters.to_date, 'Date')}}
+</h5>
+
+<hr>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>{{ "Posting Date" }}</th>
+			<th>{{ "Against Account" }}</th>
+			<th>{{ "Voucher No" }}</th>
+			<th>{{ "Debit (INR)" }}</th>
+			<th>{{ "Credit (INR)" }}</th>
+			<th>{{ "Balance (INR)" }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in data %}
+			<tr>
+			<td>{{ frappe.format(row.posting_date, 'Date') }}</td>
+			{% if row.against %}<td>{{row.against}}</td>
+			{% else %}
+			<td><strong>{{row.account}}</strong></td>
+			{% endif %}
+			{% if row.voucher_no %}<td>{{row.voucher_no}}</td>
+			{% else %}
+			<td></td>
+			{% endif %}
+			<td>{{ row.debit }}</td>
+			<td>{{ row.credit }}</td>
+			<td>{{ row.balance }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<p class="text-right text-muted">Printed On {{ frappe.format(frappe.utils.get_datetime(), 'Datetime') }}</p>
+<div id="footer-html" class="visible-pdf">
+ <p class="text-center small page-number visible-pdf">
+  {{ _("Page {0} / {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+ </p>
+</div>

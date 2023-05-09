@@ -1,0 +1,39 @@
+{
+ "actions": [],
+ "creation": "2021-01-30 16:10:47.646837",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "report",
+  "bot"
+ ],
+ "fields": [
+  {
+   "fieldname": "report",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Report",
+   "options": "Report"
+  },
+  {
+   "fieldname": "bot",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bot",
+   "options": "Telegram Bot"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-01-30 16:10:47.646837",
+ "modified_by": "Administrator",
+ "module": "Essdee",
+ "name": "Report Bot Mapping",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

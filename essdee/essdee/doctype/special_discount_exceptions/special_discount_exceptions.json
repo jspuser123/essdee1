@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "creation": "2020-06-15 21:02:32.559828",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "transporter",
+  "special_discount"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "transporter",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transporter"
+  },
+  {
+   "fieldname": "special_discount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Special Discount"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2020-06-15 21:03:57.096587",
+ "modified_by": "Administrator",
+ "module": "Essdee",
+ "name": "Special Discount Exceptions",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

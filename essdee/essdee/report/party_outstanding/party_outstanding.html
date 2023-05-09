@@ -1,0 +1,81 @@
+<style>
+	.print-format {
+	margin-left: 3mm;
+	margin-right: 4mm;
+	}
+	.print-format td, .print-format th, .print-format p {
+		vertical-align: top !important;
+		padding: 2px !important;
+	}
+</style>
+{% if 'letter_head' in filters %}
+<div  id="header-html" class="hidden-pdf">
+	<div class="letter-head">{{ filters.letter_head }}</div>
+</div>
+{% endif %}
+<h2 class="text-center">{{ "Accounts Receivable" }}</h2>
+{% if  filters.city  %}
+<h4 class="text-center">{{filters.customer }}  ({{filters.city }})</h4>
+{% else %}
+<h4 class="text-center">{{filters.customer }}</h4>
+{% endif %}
+<h5 class="text-center">
+	{{ "Posting Date Until " }}
+	{{ frappe.format(filters.report_date, 'Date')}}
+</h5>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th style="width: 15%">{{ "Date" }}</th>
+			<th style="width: 15%">{{ "Voucher Type" }}</th>
+			<th style="width: 15%">{{ "Voucher No" }}</th>
+			<th class="text-right" style="width: 15%">{{ "Invoiced Amount" }}</th>
+			<th class="text-right" style="width: 15%">{{ "Paid Amount" }}</th>
+            <th class="text-right" style="width: 15%">{{ "Outstanding Amount" }}</th>
+            <th class="text-right" style="width: 10%">{{ "Age (Days)" }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in data %}
+			<tr>
+			<td>{{ frappe.format(row.posting_date, 'Date') }}</td>
+			<td>{{ row.voucher_type }}</td>
+			<td>{{ row.voucher_no }}</td>
+			<td class="text-right">{{ row.invoiced }}</td>
+			<td class="text-right">{{ row.paid }}</td>
+			<td class="text-right">{{ row.outstanding }}</td>
+			<td class="text-right">{{ row.age }}</td>
+			</tr>
+		{% endfor %}
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td class="text-right"><strong>{{'Total'}}
+				</strong>
+			</td>
+			<td class="text-right"><strong>{{ data|sum(attribute='outstanding') }}
+				</strong>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td colspan="7">
+				<div class="text-center">Recent Average Payment Days: <strong>{{ summary.avg_payment_days }} Days</strong></div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="7">
+				<div class="text-center">Last payment was {{frappe.format(summary.last_payment_amount, 'Currency')}} on {{frappe.format(summary.last_payment_date, 'Date')}}</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p class="text-right text-muted">Printed On {{ frappe.format(frappe.utils.get_datetime(), 'Datetime') }}</p>
+<div id="footer-html" style="margin-bottom: 0em;">
+	<p style="text-align: left;">
+		<span style="float: right">{{ _("Page {0} / {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}</span>
+		{{ filters.customer }} {{ " - Posting Date Until " }}{{ frappe.format(filters.report_date, 'Date')}}
+		</p> 
+</div>

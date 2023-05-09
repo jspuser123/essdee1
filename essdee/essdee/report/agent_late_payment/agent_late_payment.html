@@ -1,0 +1,85 @@
+<style>
+	.print-format {
+	margin-left: 3mm;
+	margin-right: 4mm;
+	}
+	.print-format th{
+		background-color:#e56734 !important;
+		color: white;
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+	.print-format td
+	{
+		background-color: #ffffff !important;
+		color: black;
+		border-color:#e56734 !important;
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+	.print-format p {
+		vertical-align: bottom !important;
+		padding: 0px !important;
+	}
+
+	.table-bordered th.right{border-right: none !important;}
+	.table-bordered th.left{border-left: none !important;}
+    .table-bordered td.right{border-right: none !important;}
+    .table-bordered td.left{border-left: none !important;}
+</style>
+<div  id="header-html" class="hidden-pdf">
+</div>
+<h4 class="text-center" style="page-break-before:always">{{ filters.company }}</h4>
+<h5 class="text-center">{{ filters.customer_group }}</h5>
+<h5 class="text-center">
+	{{ "Late Payment as on " }}
+	{{ frappe.format(filters.report_date, 'Date')}}
+</h5>
+<table class="table table-bordered" style="border-color:#e56734;border-collapse: collapse; margin: 0px; padding: 0px;">
+	<thead>
+		<tr>
+            <th class="right left" style="width: 20%">{{ "Customer" }}</th>
+			<th class="right left" style="width: 12%">{{ "City" }}</th>
+			<th class="right left text-right" style="width: 20%">{{ "Total Outstanding Amt" }}</th>
+            <th class="right left text-right" style="width: 15%">{{ "Late Payment" }}</th>
+			<th class="right left text-right" style="width: 25%">{{ "Previous Week Collection" }}</th>
+			<th class="right left text-right" style="width: 8%">{{ "Avg Days" }}</th>
+		</tr>
+	</thead>
+	<tbody >
+		{% for row in data %}
+			<tr>
+				{% if loop.index % 2 != 0 %}
+				<td class="right left text-left" style="background-color: #fce4d6 !important;">{{ row.customer }}</td>
+				<td class="right left text-left" style="background-color: #fce4d6 !important;">{{ row.city }}</td>
+				<td class="right left text-right" style="background-color: #fce4d6 !important;">{{ row.total_out_amt }}</td>
+				<td class="right left text-right" style="background-color: #fce4d6 !important;">{{ row.late_payment }}</td>
+				<td class="right left text-right" style="background-color: #fce4d6 !important;">{{ row.previous_week_collection }}</td>
+				<td class="right left text-right" style="background-color: #fce4d6 !important;">{{ row.avg_days }}</td>
+				{% else %}
+				<td class="right left text-left">{{ row.customer }}</td>
+				<td class="right left text-left">{{ row.city }}</td>
+				<td class="right left text-right">{{ row.total_out_amt }}</td>
+				<td class="right left text-right">{{ row.late_payment }}</td>
+				<td class="right left text-right">{{ row.previous_week_collection }}</td>
+				<td class="right left text-right">{{ row.avg_days }}</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		<tr>
+			<td class="right left text-left" style="background-color: #ffffff !important;"><strong>{{'Total'}}</strong></td>
+			<td class="right left" style="background-color:#ffffff !important;"></td>
+			<td class="right left text-right" style="background-color:#ffffff !important;"><strong>{{ data|sum(attribute='total_out_amt') }}</strong></td>
+			<td class="right left text-right" style="background-color:#ffffff !important;"><strong>{{ data|sum(attribute='late_payment') }}</strong></td>
+			<td class="right left text-right" style="background-color: #ffffff !important;"><strong>{{ data|sum(attribute='previous_week_collection') }}</strong></td>
+			<td class="right left text-right" style="background-color: #ffffff !important;"><strong></strong></td>
+		</tr>
+	</tbody>
+</table>
+<p class="text-right text-muted">Printed On {{ frappe.format(frappe.utils.get_datetime(), 'Datetime') }}</p>
+<div id="footer-html" style="margin-bottom: 0em;">
+	<p style="text-align: left;">
+		<span style="float: right">{{ _("Page {0} / {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}</span>
+		{{ filters.customer_group }} {{ " - Late Payment as on " }}{{ frappe.format(doc.report_start_time, 'Datetime')}}
+		</p> 
+</div>
