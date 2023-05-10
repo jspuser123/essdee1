@@ -158,7 +158,7 @@ override_whitelisted_methods = {
 jenv = {
     "methods": [
         "sd_get_qty_in_boxes:essdee.essdee.utils.sales_invoice.sd_get_qty_in_boxes",
-		"sd_get_total_qty:essdee.essdee.utils.sales_invoice.sd_get_total_qty"
-		
+		"sd_get_total_qty:essdee.essdee.utils.sales_invoice.sd_get_total_qty",
+		"sd_print_address:essdee.essdee.utils.journal_entry.sd_print_address"
     ]
 }
