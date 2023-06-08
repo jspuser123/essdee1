@@ -22,7 +22,6 @@ frappe.query_reports["Customer Credit Report"] = {
 				return frappe.db.get_link_options('Customer Group', txt);
 			},
         },
-
 		{
             fieldname: 'period',
             label: __('period'),
@@ -30,8 +29,6 @@ frappe.query_reports["Customer Credit Report"] = {
 			default:'12',
    
         },
-
-
 	]
 };
 
